@@ -1,5 +1,4 @@
 import time
-import flet as ft
 import model as md
 
 class SpellChecker:
@@ -12,50 +11,37 @@ class SpellChecker:
         txtIn = replaceChars(txtIn.lower())
 
         words = txtIn.split()
-        paroleErrate = " - "
+        paroleErrate = []
 
-        match modality:
-            case "Default":
+        match modality.lower():
+            case "default":
                 t1 = time.time()
                 parole = self._multiDic.searchWord(words, language)
                 for parola in parole:
                     if not parola.corretta:
-                        paroleErrate = paroleErrate + str(parola) + " - "
+                        paroleErrate.append(str(parola))
                 t2 = time.time()
-                return paroleErrate, t2 - t1
+                return " - ".join(paroleErrate), t2 - t1
 
-            case "Linear":
+            case "linear":
                 t1 = time.time()
                 parole = self._multiDic.searchWordLinear(words, language)
                 for parola in parole:
                     if not parola.corretta:
-                        paroleErrate = paroleErrate + str(parola) + " "
+                        paroleErrate.append(str(parola))
                 t2 = time.time()
-                return paroleErrate, t2 - t1
+                return " - ".join(paroleErrate), t2 - t1
 
-            case "Dichotomic":
+            case "dichotomic":
                 t1 = time.time()
                 parole = self._multiDic.searchWordDichotomic(words, language)
                 for parola in parole:
                     if not parola.corretta:
-                        paroleErrate = paroleErrate + str(parola) + " - "
+                        paroleErrate.append(str(parola))
                 t2 = time.time()
-                return paroleErrate, t2 - t1
+                return " - ".join(paroleErrate), t2 - t1
             case _:
-                return None
-
-
-    def printMenu(self):
-        print("______________________________\n" +
-              "      SpellChecker 101\n"+
-              "______________________________\n " +
-              "Seleziona la lingua desiderata\n"
-              "1. Italiano\n" +
-              "2. Inglese\n" +
-              "3. Spagnolo\n" +
-              "4. Exit\n" +
-              "______________________________\n")
-
+                return None, 0
 
 def replaceChars(text):
     chars = "\\`*_{}[]()>#+-.!$?%^;,=_~"
